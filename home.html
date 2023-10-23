@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Home Page</h2>
+
+
+<div>
+    <p>Welcome back, {{ username }}! What would you like to order today?</p>
+    <form action="{{ url_for('home') }}" method="GET">
+        <input type="text" name="search" id="search" value="{{ request.args.get('search', '') }}">
+        <input type="submit" value="Search">
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
+
+<div>
+    <center>
+        <form action="{{ url_for('home') }}" method="POST">
+            <table border="1" class="styled-table">
+                <thead>
+                    <tr>
+                        <th><center>Select</center></th>
+                        <th><center>Item ID</center></th>
+                        <th style="width: 200px;"><center>Item Name</center></th>
+                        <th style="width: 100px;"><center>Price</center></th>
+                        <th style="width: 100px;"><center>Quantity</center></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set count = namespace(value=0) %}
+                    {% for row in items %}
+                    <tr>
+                        <td><center>
+                            <input type="checkbox" class="styled-checkbox" name="{{row['item_id']}}" id="{{row['item_id']}}" {{'checked="True"' if tnf[count.value] else ""}}>
+                            <label for="{{row['item_id']}}" class="styled-label"></label>
+                        </center></td>
+                        <td><center>{{ row['item_id'] }}</center></td>
+                        <td>{{ row['item_name'] }}</td>
+                        <td><center>Rs. {{ row['item_price'] }}</center></td>
+                        <td><center><input type="number" name="quantity_{{row['item_id']}}" value="{{ session.get('quantity_'~row['item_id'])|default(1) }}" style="width: 60px;"></center></td>
+                    </tr>
+                    {% set count.value = count.value + 1 %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <input type="submit" value="Add to Cart" class="btn add-to-cart-btn" onclick="alertshow">
+            <br> <br>
+            {% for message in get_flashed_messages() %}
+                {{message}}
+            {% endfor %}
+        </form>
+    </center>
+</div>
+{% endblock %}

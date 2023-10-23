@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h2>Profile Page</h2>
+<div>
+    <p>Your account details are below:</p>
+    <table>
+        <tr>
+            <td>Username:</td>
+            <td>{{ account['username'] }}</td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td>*****</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>{{ account['email'] }}</td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <center>
+        <h3>Your Order Summary:</h3>
+        <table border="1" class="styled-table">
+            <thead>
+                <tr>
+                    
+                    <th style="width: 200px;"><center><b>Item Name</b></center></th>
+                    <th style="width: 100px;"><center><b>Price</b></center></th>
+                    <th style="width: 100px;"><center><b>Quantity</b></center></th>
+                    <th style="width: 100px;"><center><b>Amount</b></center></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in items %}
+                <tr>
+                    <td>{{ row['item_name'] }}</td>
+                    <td><center>Rs. {{ row['item_price'] }}</center></td>
+                    <td><center>{{ row['quantity'] }}<center></td>
+                    <td><center>Rs. {{ row['total_price'] }}</center></td>
+                </tr>
+                {% endfor %}
+                <tr style="background-color: #435165; font-weight: bold; font-size: 18px; color: #ffffff;">
+                    <td></td>
+                    <td></td>
+                    <td style="color: #ffffff; font-size: 18px;"><center>Total:</center></td>
+                    <td style="font-size: 18px;"><center>Rs. {{ total }}</center></td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="#" class="btn btn-danger" onclick="confirmClearCart();">Clear Cart</a>
+        <br> <br>
+            {% for message in get_flashed_messages() %}
+                {{message}}
+            {% endfor %}
+    </center>
+</div>
+<script>
+    function confirmClearCart() {
+        var confirmClear = confirm("Are you sure you want to clear your cart?");
+        if (confirmClear) {
+            window.location.href = "{{ url_for('clear_cart') }}";
+        }
+    }
+</script>
+{% endblock %}
