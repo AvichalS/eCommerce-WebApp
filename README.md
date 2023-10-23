@@ -1,2 +1,2 @@
 # eCommerce-Webapp
-An ecommerce webapp using Flask, HTML, CSS and MySQL, for students to buy stationary.
+An ecommerce webapp using Flask, HTML, CSS, Javascript and MySQL, for students to buy stationary.
